@@ -14,10 +14,6 @@ const TodoList = () => {
     await axios
       .get("http://localhost:12345/todo/")
       .then((response) => {
-        console.log(
-          response,
-          ":Cannot read properties of null (reading 'push')"
-        );
         if (response.data) {
           if (setTaskList.length >= 0) {
             setTaskList(response.data);

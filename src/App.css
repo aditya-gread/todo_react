@@ -103,4 +103,8 @@ table, td, tr {
   border: 2px solid white;
 }
 
+.card-title{
+  align-items: center;
+}
+
 

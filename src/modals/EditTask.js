@@ -89,8 +89,8 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
                   <textarea
                     style={{ backgroundColor: "white" }}
                     name="description"
-                    rows={4}
-                    cols={23}
+                    rows={15}
+                    cols={60}
                     placeholder="Enter the task description here"
                     defaultValue={""}
                     onChange={handleChange}
