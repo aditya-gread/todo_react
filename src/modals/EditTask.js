@@ -1,11 +1,20 @@
 import React, { useState , useEffect} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
+
 const EditTask = ({modal,toggle, updte, taskObj}) => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [status, setStatus] = useState(false);
+
+
+    function reset(){
+      toggle();
+        setTitle(taskObj.Title)
+        setDescription(taskObj.Description)
+        setStatus(taskObj.Status)
+    }
 
     const handleUpdate = (e) => {
         if(!Validate()){
@@ -31,17 +40,18 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
 
     const handleChange = (e) =>{
         const {name, value} = e.target;
-    
+
         if (name === "title"){
           setTitle(value);
         }else if (name === "description"){
           setDescription(value)
         }
+        console.log(taskObj);
     }
     
     const handleStatusChange = (e) =>{
           setStatus(!status);
-
+          console.log(taskObj);
     }
 
     useEffect(() => {
@@ -100,7 +110,7 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
         </ModalBody>
         <ModalFooter className='form_footer'>
           <Button style={{"color" : "green"}} onClick={handleUpdate}>Update</Button>{' '}
-          <Button style={{"color" : "red"}} onClick={toggle}>Cancel</Button>
+          <Button style={{"color" : "red"}} onClick={reset}>Cancel</Button>
         </ModalFooter>
       </Modal>
   )
