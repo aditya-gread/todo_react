@@ -4,16 +4,16 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const EditTask = ({modal,toggle, updte, taskObj}) => {
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [status, setStatus] = useState(false);
+    const [editTitle, setEditTitle] = useState("");
+    const [editDescription, setEditDescription] = useState("");
+    const [editStatus, setEditStatus] = useState(false);
 
 
     function reset(){
       toggle();
-        setTitle(taskObj.Title)
-        setDescription(taskObj.Description)
-        setStatus(taskObj.Status)
+        setEditTitle(taskObj.Title)
+        setEditDescription(taskObj.Description)
+        setEditStatus(taskObj.Status)
     }
 
     const handleUpdate = (e) => {
@@ -23,16 +23,14 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
             return;
           }
         e.preventDefault();
-        taskObj["Title"] = title ;
-        taskObj["Description"] = description;
-        taskObj["Status"] = status;
+        taskObj["Title"] = editTitle ;
+        taskObj["Description"] = editDescription;
+        taskObj["Status"] = editStatus;
         updte(taskObj);
-        setTitle("");
-        setDescription("");
-        setStatus(false);
       }
+
     function Validate(){
-        if(title.length>0 && title.length<256 && description.length<256){
+        if(editTitle.length>0 && editTitle.length<256 && editDescription.length<256){
           return true;
         }
         return false;
@@ -42,22 +40,21 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
         const {name, value} = e.target;
 
         if (name === "title"){
-          setTitle(value);
+          setEditTitle(value);
         }else if (name === "description"){
-          setDescription(value)
+          setEditDescription(value)
         }
-        console.log(taskObj);
     }
     
     const handleStatusChange = (e) =>{
-          setStatus(!status);
+          setEditStatus(!editStatus);
           console.log(taskObj);
     }
 
     useEffect(() => {
-        setTitle(taskObj.Title)
-        setDescription(taskObj.Description)
-        setStatus(taskObj.Status)
+        setEditTitle(taskObj.Title)
+        setEditDescription(taskObj.Description)
+        setEditStatus(taskObj.Status)
     },[])
 
   return (
@@ -77,7 +74,7 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
                     placeholder="Enter The task title"
                     name="title"
                     onChange={handleChange}
-                    value={title}
+                    value={editTitle}
                   />
                 </td>
               </tr>
@@ -94,13 +91,13 @@ const EditTask = ({modal,toggle, updte, taskObj}) => {
                     placeholder="Enter the task description here"
                     defaultValue={""}
                     onChange={handleChange}
-                    value={description}
+                    value={editDescription}
                   />
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "right" }}>
-                  <input type="checkbox" defaultChecked={status} value={status} onChange={handleStatusChange} name='status'/>
+                  <input type="checkbox" defaultChecked={editStatus} value={editStatus} onChange={handleStatusChange} name='status'/>
                 </td>
                 <td>Is the task complete</td>
               </tr>

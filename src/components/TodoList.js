@@ -33,33 +33,35 @@ const TodoList = () => {
     });
   };
 
-  const todoDelete = async (taskId) => {
-    axios.post(`http://localhost:12345/todo/delete/${taskId}`, {});
-  };
+  const todoDelete = async (taskId, index, tempList) => {
+    axios.post(`http://localhost:12345/todo/delete/${taskId}`, {})
+    .then(
+      tempList.splice(index, 1),
+      setTaskList(tempList),
+    )};
 
   const deleteTask = (taskObj, index) => {
-    todoDelete(taskObj["Id"]);
     let tempList = taskList;
-    tempList.splice(index, 1);
-    setTaskList(tempList);
-    window.location.reload();
+    todoDelete(taskObj["Id"], index, tempList);
   };
 
-  const todoUpdate = async (taskObj) => {
+  const todoUpdate = async (taskObj, tempList,index) => {
     axios.put(`http://localhost:12345/todo/update/${taskObj["Id"]}`, {
       Id: taskObj["Id"],
       Title: taskObj["Title"],
       Description: taskObj["Description"],
       Status: taskObj["Status"],
+    }).then(
+      tempList[index] = taskObj,
+      setTaskList(tempList),
+    ).catch((error) => {
+      console.log(error);
     });
   };
 
   const updateTask = (taskObj, index) => {
-    todoUpdate(taskObj);
     let tempList = taskList;
-    tempList[index] = taskObj;
-    setTaskList(tempList);
-    window.location.reload();
+    todoUpdate(taskObj,tempList,index);
   };
 
   const saveTask = (taskObj) => {
@@ -73,7 +75,7 @@ const TodoList = () => {
 
   useEffect(() => {
     todoTasks();
-  }, []);
+  }, [taskList]);
 
   return (
     <>

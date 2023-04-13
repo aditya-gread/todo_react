@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EditTask from "../modals/EditTask";
 
 const Card = ({ taskObj, index, del, updatedTask }) => {
-  const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const colors = [
     {
@@ -27,12 +27,13 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
     },
   ];
 
-  const toggle = () => {
-    setModal(!modal);
+  const editToggle = () => {
+    setEditModal(!editModal);
   };
 
   const updateTask = () => {
     updatedTask(taskObj, index);
+    editToggle();
   };
 
   const handleDelete = () => {
@@ -58,7 +59,7 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
               borderRadius: "10px",
             }}
           >
-            <b className="card-title">{taskObj.Title}</b>
+            <b>{taskObj.Title}</b>
           </span>
           <p className="card-desc">{taskObj.Description}</p>
           <div className="card-actions">
@@ -76,7 +77,7 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
                   cursor: "pointer",
                   marginRight: "5px",
                 }}
-                onClick={() => setModal(true)}
+                onClick={() => setEditModal(true)}
                 value="Show"
               />
               <input
@@ -94,8 +95,8 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
         </div>
       </div>
       <EditTask
-        toggle={toggle}
-        modal={modal}
+        toggle={editToggle}
+        modal={editModal}
         updte={updateTask}
         taskObj={taskObj}
       />
