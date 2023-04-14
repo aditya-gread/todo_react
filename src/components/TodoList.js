@@ -40,7 +40,7 @@ const TodoList = () => {
 
   // sends request to delete to api
   const todoDelete = async (taskId) => {
-    axios.post(`http://localhost:12345/todo/delete/${taskId}`, {})
+    axios.delete(`http://localhost:12345/todo/delete/${taskId}`, {})
     .then(() => {
       todoTasks()
     }
@@ -129,7 +129,7 @@ const TodoList = () => {
               del={deleteTask}
               updatedTask={updateTask}
             />
-          )) :<h1>No Task, Please Add Some !!!!!!!</h1>}
+          )) :<h1>No Task Available, Please Add Some !!!!!!!</h1>}
       </div>
       <CreateTask toggle={toggle} modal={modal} save={saveTask} />
     </>
