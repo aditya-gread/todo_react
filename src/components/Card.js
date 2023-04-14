@@ -32,13 +32,12 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
   };
 
   const updateTask = () => {
-    updatedTask(taskObj, index);
+    updatedTask(taskObj);
     editToggle();
   };
 
   const handleDelete = () => {
-    // taskList.splice(index,1)
-    del(taskObj, index);
+    del(taskObj);
   };
   return (
     <>

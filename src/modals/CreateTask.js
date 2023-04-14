@@ -6,6 +6,7 @@ const CreateTask = ({ modal, toggle, save }) => {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);
 
+  // handles changes made in title and description
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -15,6 +16,8 @@ const CreateTask = ({ modal, toggle, save }) => {
       setDescription(value);
     }
   };
+
+  //validates the inputs
   function Validate() {
     console.log(title.length, description.length);
     if (title.length > 0 && title.length < 256 && description.length < 256) {
@@ -23,10 +26,12 @@ const CreateTask = ({ modal, toggle, save }) => {
     return false;
   }
 
+  // handles changes made in status checkbox
   const handleStatusChange = (e) => {
     setStatus(!status);
   };
 
+  // handles create button
   const handleSave = () => {
     if (!Validate()) {
       toggle();
@@ -83,8 +88,8 @@ const CreateTask = ({ modal, toggle, save }) => {
                   <textarea
                     style={{ backgroundColor: "white" }}
                     name="description"
-                    rows={4}
-                    cols={23}
+                    rows={10}
+                    cols={40}
                     placeholder="Enter the task description here"
                     defaultValue={""}
                     onChange={handleChange}

@@ -14,6 +14,12 @@
   color: white;
 }
 
+.header-search{
+  border-radius: 10px;
+  margin-left: 20px;
+  height: 30px;
+}
+
 .form_modal{
   position: fixed;
   left: 0;

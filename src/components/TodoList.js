@@ -5,19 +5,19 @@ import Card from "./Card";
 
 const TodoList = () => {
   const [modal, setModal] = useState(false);
+  const [search, setSearch] = useState("");
   const toggle = () => {
     setModal(!modal);
   };
   const [taskList, setTaskList] = useState([]);
 
+  // fetches all data from api
   const todoTasks = async () => {
     await axios
       .get("http://localhost:12345/todo/")
       .then((response) => {
         if (response.data) {
-          if (setTaskList.length >= 0) {
             setTaskList(response.data);
-          }
         }
       })
       .catch((error) => {
@@ -25,57 +25,87 @@ const TodoList = () => {
       });
   };
 
+  // sends data to api
   const todoAdd = async (taskObj) => {
     axios.post("http://localhost:12345/todo/", {
       Title: taskObj["Title"],
       Description: taskObj["Description"],
       Status: taskObj["Status"],
-    });
+    }).then(() =>{
+      todoTasks();
+    }
+
+    );
   };
 
-  const todoDelete = async (taskId, index, tempList) => {
+  // sends request to delete to api
+  const todoDelete = async (taskId) => {
     axios.post(`http://localhost:12345/todo/delete/${taskId}`, {})
-    .then(
-      tempList.splice(index, 1),
-      setTaskList(tempList),
+    .then(() => {
+      todoTasks()
+    }
     )};
 
   const deleteTask = (taskObj, index) => {
-    let tempList = taskList;
-    todoDelete(taskObj["Id"], index, tempList);
+    todoDelete(taskObj["Id"]);
   };
 
-  const todoUpdate = async (taskObj, tempList,index) => {
+  // sends request to update to api
+  const todoUpdate = async (taskObj) => {
     axios.put(`http://localhost:12345/todo/update/${taskObj["Id"]}`, {
       Id: taskObj["Id"],
       Title: taskObj["Title"],
       Description: taskObj["Description"],
       Status: taskObj["Status"],
-    }).then(
-      tempList[index] = taskObj,
-      setTaskList(tempList),
+    }).then(() => {
+      todoTasks()
+    }
     ).catch((error) => {
       console.log(error);
     });
   };
 
-  const updateTask = (taskObj, index) => {
-    let tempList = taskList;
-    todoUpdate(taskObj,tempList,index);
+  const updateTask = (taskObj) => {
+    todoUpdate(taskObj);
   };
 
   const saveTask = (taskObj) => {
     console.log(taskList, "taskList");
-    let tempList = [...taskList];
-    tempList.push(taskObj);
     todoAdd(taskObj);
-    setTaskList(tempList);
     setModal(false);
   };
 
   useEffect(() => {
-    todoTasks();
-  }, [taskList]);
+    if(search.length === 0 && taskList.length === 0){
+      todoTasks();
+    }
+  }, [taskList,search]);
+
+  // sends request to search data
+  const searchTask = async (word) => {
+    await axios
+      .get(`http://localhost:12345/todo/search/${word}`)
+      .then((response) => {
+        if (response.data) {
+          if (setTaskList.length >= 0) {
+            setTaskList(response.data);
+          }
+        }else{
+          setTaskList([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleSearch = (e) =>{
+    const {name, value} = e.target;
+    if( name === "search"){
+      setSearch(value);
+      searchTask(value);
+    }
+  }
 
   return (
     <>
@@ -84,13 +114,13 @@ const TodoList = () => {
         <button
           className="btn_primary"
           onClick={() => setModal(true)}
-          style={{ cursor: "pointer" }}
-        >
+          style={{ cursor: "pointer" }}>
           Create Task
         </button>
+        <input className="header-search" type="text" placeholder="Search" onChange={handleSearch} name="search"/>
       </div>
       <div className="task-container">
-        {taskList ?
+        {taskList && taskList.length>0 ?
           taskList.map((obj, index) => (
             <Card
               key={obj.Id}
@@ -99,7 +129,7 @@ const TodoList = () => {
               del={deleteTask}
               updatedTask={updateTask}
             />
-          )) : <p>No Task Left Add Some Please!!!!!!!</p>}
+          )) :<h1>No Task, Please Add Some !!!!!!!</h1>}
       </div>
       <CreateTask toggle={toggle} modal={modal} save={saveTask} />
     </>
