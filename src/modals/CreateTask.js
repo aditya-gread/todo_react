@@ -19,7 +19,6 @@ const CreateTask = ({ modal, toggle, save }) => {
 
   //validates the inputs
   function Validate() {
-    console.log(title.length, description.length);
     if (title.length > 0 && title.length < 256 && description.length < 256) {
       return true;
     }

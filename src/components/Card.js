@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import EditTask from "../modals/EditTask";
 
-const Card = ({ taskObj, index, del, updatedTask }) => {
+const Card = ({ taskObj, index, del, optionSelected, updatedTask }) => {
   const [editModal, setEditModal] = useState(false);
 
+  // array of primary and secondary colors
   const colors = [
     {
       primaryColor: "#5D93E1",
@@ -27,21 +28,25 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
     },
   ];
 
+  // changes the value of modal
   const editToggle = () => {
     setEditModal(!editModal);
   };
 
+  // handles updation of tasks
   const updateTask = () => {
     updatedTask(taskObj);
     editToggle();
   };
 
+  // handles deletion of tasks
   const handleDelete = () => {
     del(taskObj);
   };
+
   return (
     <>
-      <div className="card-wrapper">
+      <div className="card-wrapper" onClick={() => setEditModal(true)}>
         <div
           className="card-top"
           style={{
@@ -68,7 +73,7 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
             <div
               style={{ position: "absolute", right: "20px", bottom: "20px" }}
             >
-              <input
+              {/* <input
                 type="button"
                 className="card_edit"
                 style={{
@@ -78,13 +83,15 @@ const Card = ({ taskObj, index, del, updatedTask }) => {
                 }}
                 onClick={() => setEditModal(true)}
                 value="Show"
-              />
+              /> */}
               <input
                 type="button"
                 className="card_delete"
+                id="btn_delete"
                 style={{
                   backgroundColor: colors[index % 5].primaryColor,
                   cursor: "pointer",
+                  display: optionSelected === 3?"none":"block",
                 }}
                 onClick={handleDelete}
                 value="Delete"
