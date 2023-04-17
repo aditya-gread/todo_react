@@ -41,7 +41,10 @@ const Card = ({ taskObj, index, del, optionSelected, updatedTask }) => {
 
   // handles deletion of tasks
   const handleDelete = () => {
-    del(taskObj);
+    if(optionSelected === 3)
+      del(taskObj, 1);
+    else
+      del(taskObj, 0);
   };
 
   return (
@@ -90,8 +93,6 @@ const Card = ({ taskObj, index, del, optionSelected, updatedTask }) => {
                 id="btn_delete"
                 style={{
                   backgroundColor: colors[index % 5].primaryColor,
-                  cursor: "pointer",
-                  display: optionSelected === 3?"none":"block",
                 }}
                 onClick={handleDelete}
                 value="Delete"

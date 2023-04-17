@@ -8,14 +8,17 @@ const TodoList = () => {
   const [search, setSearch] = useState("");
   const options = ['All Tasks','Completed Tasks', 'Active Tasks', 'Deleted Tasks'];
   const [optionSelected, setOptionSelected] = useState(0);
+  const [err, setErr] = useState(0);
   const toggle = () => {
     setModal(!modal);
   };
   const [taskList, setTaskList] = useState([]);
   const [tempList,setTempList] = useState([]);
+  // const tempList = taskList
 
   // fetches all data from api
   const todoTasks = async (value) => {
+    setErr(0);
     await axios
       .get(`http://localhost:12345/todo/${value}`)
       .then((response) => {
@@ -29,41 +32,58 @@ const TodoList = () => {
             }
         }else{
           setTaskList([]);
+          if(value === 0)
+            setTempList([]);
         }
       })
       .catch((error) => {
+        setErr(1)
         console.log(error);
+        setTaskList([]);
+        if(value === 0)
+          setTempList([]);
       });
   };
 
   // sends data to api
   const todoAdd = async (taskObj) => {
+    setErr(0);
     axios.post("http://localhost:12345/todo/", {
       Title: taskObj["Title"],
       Description: taskObj["Description"],
       Status: taskObj["Status"],
     }).then(() =>{
       todoTasks(0);
-    }
-
-    );
+    })
+    .catch((error) =>{
+      setErr(1)
+      console.log(error);
+      setTaskList([]);
+    });
   };
 
   // sends request to delete to api
-  const todoDelete = async (taskId) => {
-    axios.delete(`http://localhost:12345/todo/delete/${taskId}`, {})
+  const todoDelete = async (taskId, deleteType) => {
+    setErr(0);
+    axios.delete(`http://localhost:12345/todo/delete/${taskId}/${deleteType}`, {})
     .then(() => {
       todoTasks(0)
-    }
-  )};
+    })
+    .catch((error) =>{
+      setErr(1)
+      console.log(error);
+      setTaskList([]);
+    })
+  };
   
   // handles deleteTask
-  const deleteTask = (taskObj) => {
-    todoDelete(taskObj["Id"]);
+  const deleteTask = (taskObj, deleteType) => {
+    todoDelete(taskObj["Id"],deleteType);
   };
 
   // sends request to update to api
   const todoUpdate = async (taskObj) => {
+    setErr(0);
     axios.put(`http://localhost:12345/todo/update/${taskObj["Id"]}`, {
       Id: taskObj["Id"],
       Title: taskObj["Title"],
@@ -72,8 +92,10 @@ const TodoList = () => {
     }).then(() => {
       todoTasks(0)
     }
-    ).catch((error) => {
+    ).catch((error) =>{
+      setErr(1)
       console.log(error);
+      setTaskList([]);
     });
   };
 
@@ -89,13 +111,14 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    if(search.length === 0 && taskList.length === 0 && optionSelected != 3){
+    if(search.length === 0 && taskList.length === 0){
       todoTasks(0);
     }
-  }, [taskList]);
+  }, []);
 
   // sends request to search data
   const searchTask = async (word) => {
+    setErr(0);
     await axios
       .get(`http://localhost:12345/todo/search/${word}/${optionSelected}`)
       .then((response) => {
@@ -105,8 +128,10 @@ const TodoList = () => {
           setTaskList([]);
         }
       })
-      .catch((error) => {
+      .catch((error) =>{
+        setErr(1)
         console.log(error);
+        setTaskList([]);
       });
   };
 
@@ -170,7 +195,7 @@ const TodoList = () => {
               optionSelected ={optionSelected}
               updatedTask={updateTask}
             />
-          )) :<h1>No Task Available, Please Add Some !!!!!!!</h1>}
+          )) :<h1>{err?"Something Went Wrong !!!!":"No Task Available, Please Add Some !!!!!!!"}</h1>}
       </div>
       <CreateTask toggle={toggle} modal={modal} save={saveTask} />
     </>
