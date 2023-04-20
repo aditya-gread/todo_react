@@ -49,7 +49,7 @@ const Card = ({ taskObj, index, del, optionSelected, updatedTask }) => {
 
   return (
     <>
-      <div className="card-wrapper" onClick={() => setEditModal(true)}>
+      <div className="card-wrapper">
         <div
           className="card-top"
           style={{
@@ -59,6 +59,7 @@ const Card = ({ taskObj, index, del, optionSelected, updatedTask }) => {
           }}
         ></div>
         <div className="task-holder">
+          <div className="task-holder-click" onClick={() => setEditModal(true)}>
           <span
             className="card-header"
             style={{
@@ -68,7 +69,8 @@ const Card = ({ taskObj, index, del, optionSelected, updatedTask }) => {
           >
             <b>{taskObj.Title}</b>
           </span>
-          <p className="card-desc">{taskObj.Description}</p>
+          <p className="card-desc" dangerouslySetInnerHTML={{__html:taskObj.Description}}></p>
+          </div>
           <div className="card-actions">
             <div>
               <h4>{taskObj.Status ? "-> DONE" : "-> PENDING"}</h4>

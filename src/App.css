@@ -1,3 +1,8 @@
+.App{
+  width: 100vw;
+  overflow: hidden;
+}
+
 .header{
   text-align: center;
   background-color:lightcyan;
@@ -35,7 +40,7 @@
   top: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0,0,0.5);
+  background-color: rgba(8, 1, 1, 0.5);
   display:flex;
   align-items: center;
   justify-content: center;
@@ -64,6 +69,11 @@
   margin: 33px;
   display: flex;
   flex-direction: column;
+}
+
+.task-holder-click{
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
 }
 
@@ -79,7 +89,7 @@
   text-align: center;
 
   width: 100%;
-   height: 36px;
+  height: 36px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -88,12 +98,16 @@
 .task-container{
   height: 475px;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
   background-color: #F6F7F8;
   padding : 40px 50px;
-  overflow: scroll;
+  overflow: auto;
+  overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  /* display: grid;
+  grid-template-columns: repeat(4, 1fr); */
 }
+
 .task-holder{
   height: 98%;
   padding: 10px 10px;

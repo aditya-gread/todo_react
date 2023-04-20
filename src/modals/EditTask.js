@@ -69,11 +69,11 @@ const EditTask = ({ modal, toggle, updte, taskObj }) => {
     <Modal isOpen={modal} toggle={toggle} className="form_modal">
       <ModalHeader
         toggle={toggle}
-        style={{ color: "white", border: "1px solid white" }}
+        style={{ color: "white", border: "1px solid white", backgroundColor: "black"}}
       >
         Create Task
       </ModalHeader>
-      <ModalBody>
+      <ModalBody style={{backgroundColor: "black"}}>
         <form>
           <table style={{ color: "white" }}>
             <tbody>
